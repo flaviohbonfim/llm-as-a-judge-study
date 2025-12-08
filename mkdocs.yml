@@ -1,0 +1,86 @@
+site_name: LLMs as a Judge - Estudo Completo
+site_description: Estudo profundo sobre uso de LLMs para avaliar agentes de IA
+site_author: Equipe de IA
+site_url: https://flaviohbonfim.github.io/llm-as-a-judge-study
+
+theme:
+  name: material
+  language: pt-BR
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Alternar para modo escuro
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Alternar para modo claro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.annotate
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+repo_name: flaviohbonfim/llm-as-a-judge-study
+repo_url: https://github.com/flaviohbonfim/llm-as-a-judge-study
+edit_uri: edit/main/docs/
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - tables
+  - fenced_code
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+nav:
+  - Início: README.md
+  - Documentação:
+    - Índice: docs/INDEX_LLMs_Judge.md
+    - Quick Start: docs/QUICK_START_JUDGE.md
+    - Resumo Executivo: docs/RESUMO_EXECUTIVO_LLMs_Judge.md
+    - Estudo Completo: docs/LLMs_as_Judge_Study.md
+    - Guia de Deploy: docs/DEPLOYMENT_GUIDE.md
+  - Exemplos:
+    - README: examples/README_JUDGE.md
+    - Implementação: examples/llm_judge_implementation.py
+    - Templates: examples/judge_prompts_templates.py
+    - Configurações: examples/judge_configs.yaml
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/flaviohbonfim
+  version:
+    provider: mike
+
+copyright: Copyright &copy; 2024 Equipe de IA
+

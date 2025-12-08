@@ -1,0 +1,172 @@
+# Configurações recomendadas para LLM Judge
+
+# Configurações de Modelos
+models:
+  # Modelo principal recomendado (custo-benefício ideal)
+  primary:
+    name: "gemini-2.0-flash"
+    provider: "google"
+    temperature: 0.0  # Baixa temperatura para consistência
+    max_tokens: 2048
+  
+  # Modelo para casos críticos (maior precisão)
+  critical:
+    name: "gemini-2.0-pro"
+    provider: "google"
+    temperature: 0.0
+    max_tokens: 4096
+  
+  # Modelo alternativo (OpenAI)
+  alternative:
+    name: "gpt-4o-mini"
+    provider: "openai"
+    temperature: 0.0
+    max_tokens: 2048
+
+# Critérios de Avaliação Padrão
+evaluation_criteria:
+  response_quality:
+    correctness: "A resposta está factualmente correta?"
+    relevance: "A resposta é relevante à pergunta?"
+    completeness: "A resposta está completa?"
+    clarity: "A resposta é clara e bem estruturada?"
+    safety: "A resposta é segura e apropriada?"
+  
+  trajectory:
+    order: "As ações foram executadas na ordem correta?"
+    completeness: "Todas as ações necessárias foram executadas?"
+    efficiency: "A trajetória foi eficiente (sem ações desnecessárias)?"
+    correctness: "As ações são apropriadas para o contexto?"
+  
+  conversational:
+    coherence: "A resposta é coerente com o contexto da conversa?"
+    relevance: "A resposta é relevante para a pergunta atual?"
+    helpfulness: "A resposta é útil para o usuário?"
+    naturalness: "A resposta soa natural e conversacional?"
+    completeness: "A resposta está completa ou precisa de follow-up?"
+  
+  code_quality:
+    correctness: "O código está correto e funciona?"
+    efficiency: "O código é eficiente?"
+    readability: "O código é legível e bem estruturado?"
+    best_practices: "O código segue melhores práticas?"
+    documentation: "O código está bem documentado?"
+    security: "O código é seguro?"
+  
+  rag_quality:
+    answer_quality: "A resposta está correta e completa?"
+    source_relevance: "As fontes são relevantes para a pergunta?"
+    citation_accuracy: "As citações estão corretas?"
+    groundedness: "A resposta está fundamentada nas fontes?"
+    attribution: "A atribuição às fontes está clara?"
+
+# Escalas de Pontuação
+scoring_scales:
+  default:
+    excellent: [0.9, 1.0]
+    good: [0.7, 0.89]
+    acceptable: [0.4, 0.69]
+    unsatisfactory: [0.0, 0.39]
+  
+  strict:
+    excellent: [0.95, 1.0]
+    good: [0.8, 0.94]
+    acceptable: [0.6, 0.79]
+    unsatisfactory: [0.0, 0.59]
+  
+  lenient:
+    excellent: [0.8, 1.0]
+    good: [0.6, 0.79]
+    acceptable: [0.4, 0.59]
+    unsatisfactory: [0.0, 0.39]
+
+# Configurações de Integração
+integrations:
+  langfuse:
+    enabled: true
+    trace_all_evaluations: true
+    log_scores: true
+    log_metadata: true
+  
+  adk:
+    use_native_evaluator: false  # Usar judge customizado
+    combine_with_native: true  # Combinar com avaliador nativo do ADK
+
+# Configurações de Otimização de Custo
+cost_optimization:
+  caching:
+    enabled: true
+    ttl_seconds: 3600  # Cache por 1 hora
+  
+  batching:
+    enabled: false
+    batch_size: 10
+  
+  hierarchical_evaluation:
+    enabled: true
+    fast_model_threshold: 0.7
+    use_fast_model_first: true
+  
+  sampling:
+    enabled: false
+    sample_rate: 0.1  # Avaliar apenas 10% se habilitado
+
+# Configurações de Retry e Robustez
+robustness:
+  max_retries: 3
+  retry_delay_seconds: 2
+  exponential_backoff: true
+  fallback_on_error: true
+  
+  validation:
+    require_score: true
+    require_justification: true
+    min_score: 0.0
+    max_score: 1.0
+
+# Configurações de Benchmarks
+benchmarks:
+  consistency:
+    num_runs: 3
+    max_variance: 0.1
+  
+  human_correlation:
+    min_correlation: 0.7
+    sample_size: 100
+  
+  bias_detection:
+    enabled: true
+    categories: ["domain", "language", "complexity"]
+
+# Configurações Específicas por Tipo de Avaliação
+evaluation_types:
+  trajectory:
+    model: "primary"
+    criteria: "trajectory"
+    scale: "default"
+  
+  response_quality:
+    model: "primary"
+    criteria: "response_quality"
+    scale: "default"
+  
+  comparative:
+    model: "critical"  # Usar modelo mais preciso para comparação
+    criteria: "response_quality"
+    scale: "default"
+  
+  conversational:
+    model: "primary"
+    criteria: "conversational"
+    scale: "default"
+  
+  code_quality:
+    model: "critical"  # Código requer avaliação mais precisa
+    criteria: "code_quality"
+    scale: "strict"
+  
+  rag_quality:
+    model: "primary"
+    criteria: "rag_quality"
+    scale: "default"
+
