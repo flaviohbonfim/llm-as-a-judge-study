@@ -8,6 +8,7 @@ on:
       - 'docs/**'
       - 'examples/**'
       - 'mkdocs.yml'
+      - 'requirements-docs.txt'
       - '.github/workflows/deploy.yml'
       - 'README.md'
 
@@ -30,6 +31,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements-docs.txt
+          pip install mkdocs-minify-plugin
       
       - name: Build docs
         run: mkdocs build
